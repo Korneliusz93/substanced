@@ -528,6 +528,8 @@ def set_user_locator(config, cls):
 def groupfinder(userid, request):
     """ A Pyramid authentication policy groupfinder callback that uses the
     Substance D user locator system to find group identifiers."""
+    if not hasattr(request, 'context') or request.context is None:
+        return None  # Gracefully handle when context is not set
     context = request.context
     adapter = request.registry.queryMultiAdapter((context, request),
                                                  IUserLocator)
